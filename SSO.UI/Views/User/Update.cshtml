@@ -1,0 +1,165 @@
+﻿@using SSO.Core.Models
+@model User
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">ویرایش کاربر جدید</h6>
+                <form>
+                    <div class="row">
+                        <input type="hidden" id="id" value="@Model.Id"/>
+                         <div class="col-md-12 col-sm-12 col-lg-12">
+                            <div class="form-group text-center align-content-center">
+                                <img src="@Model.Image" style="width:100px;height:100px;"/>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام </label>
+                                <input type="text" class="form-control text-left" id="name" placeholder="نام" value="@Model.Name" dir="ltr">
+                            </div>
+                            
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">نام خانوادگی</label>
+                                <input type="text" class="form-control text-left" id="family" placeholder="نام خانوادگی" value="@Model.Family" dir="ltr">
+                            </div>
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">ایمیل </label>
+                                <input type="text" class="form-control text-left" id="email" placeholder="ایمیل" value="@Model.Email" dir="ltr">
+                            </div>
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">موبایل</label>
+                                <input type="text" class="form-control text-left" id="mobile" placeholder="موبایل" value="@Model.Mobile" dir="ltr">
+                            </div>
+                        </div>
+                         
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام کاربری </label>
+                                <input type="text" class="form-control text-left" id="username" placeholder="نام کاربری" value="@Model.UserName" dir="ltr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> پسورد </label>
+                                <input type="password" class="form-control text-left" id="password" placeholder="پسورد" dir="ltr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نقش </label>
+                                <select class="form-control" name="role" id="role">
+                                    @{
+                                        if (@Model.RoleId == 1)
+                                        {
+                                            <option value="1" selected>ادمین</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="1">ادمین</option>
+                                        }
+                                    }
+                                    @{
+                                        if (@Model.RoleId == 3)
+                                        {
+                                            <option value="3" selected>پذیرنده</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="3">پذیرنده</option>
+                                        }
+                                    }
+                                    @{
+                                        if (@Model.RoleId == 5)
+                                        {
+                                            <option value="5" selected>تامین کننده</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="5">تامین کننده</option>
+                                        }
+                                    }
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">تصویر </label>
+                                <input type="file" class="form-control text-left" id="image" aria-describedby="emailHelp" placeholder="ایمیل" dir="ltr">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary float-left" onclick="update()">ویرایش کاربر</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+                function update(){
+                        toastr.options = {
+                            timeOut: 3000,
+                            progressBar: true,
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            showDuration: 200,
+                            hideDuration: 200
+                        };
+
+
+                    var e = document.getElementById("role");
+                    var roleid = e.value;
+                    var id=$('#id').val();
+                    var name=$('#name').val();
+                    var family=$('#family').val();
+                    var email=$('#email').val();
+                    var mobile=$('#mobile').val();
+                    var username=$('#username').val();
+                    var password=$('#password').val();
+                    var input = document.getElementById("image");
+                    var files = input.files;
+                    var formData = new FormData();
+
+                    if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
+                    if(family.length<3){toastr.error("نباید نام خانوادگی کوچکتر از 3 حرف باشد");return;}
+                    if(mobile.length!=11){toastr.error("شماره موبایل باید 11 رقم باشد");return;}
+                    if(username.length<8){toastr.error("نباید نام کاربری کوچکتر از 8 حرف باشد");return;}
+                    if(password.length<8){toastr.error("نباید پسورد کوچکتر از 8 حرف باشد");return;}
+                    formData.append("files", $("#image")[0].files[0]);
+
+                    if(username.length>8 && password.length>8){
+                       $.ajax({
+                             url: '/User/Update?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&id='+id+'&name='+name+'&family='+family+'&mobile='+mobile+'&email='+email+'&username='+username+'&password='+password+'&roleid='+roleid,
+                             type: 'POST',
+                             data: formData,
+                             processData:false,
+                             contentType:false,
+                             success: function (data) {
+                                 if(data.status){
+                                     toastr.success(data.message);
+                                     window.location.href= '/User/Index?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&role='+roleid;
+                                 }else{
+                                     toastr.error(data.message);
+                                 }
+                             },
+                             error: function (xhr, textStatus, errorThrown) {
+                                 console.log('Error in Operation');
+                             }
+                         });
+                    }else{
+                        
+                        toastr.error('نام کاربری و پسورد باید از 8 حرف بیشتر باشد');
+                    }
+                }
+    </script>

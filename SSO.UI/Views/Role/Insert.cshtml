@@ -1,0 +1,63 @@
+﻿
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">ثبت نقش جدید</h6>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام </label>
+                                <input type="text" class="form-control text-left" id="name" placeholder="نام" dir="ltr">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">آدرس پنل</label>
+                                <input type="text" class="form-control text-left" id="urlpanel" placeholder="آدرس پنل" dir="ltr">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary float-left" onclick="insertrole()">ثبت نقش</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+                function insertrole(){
+                        toastr.options = {
+                            timeOut: 3000,
+                            progressBar: true,
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            showDuration: 200,
+                            hideDuration: 200
+                        };
+
+
+                    var name=$('#name').val();
+                    var urlpanel=$('#urlpanel').val();
+
+                    if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
+                    if(urlpanel.length<3){toastr.error("نباید ادرس پنل کوچکتر از 3 حرف باشد");return;}
+
+                    $.ajax({
+                             url: '/Role/Insert?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&name='+name+'&urlpanel='+urlpanel,
+                             type: 'POST',
+                             dataType: 'json',
+                             success: function (data) {
+                                 if(data.status){
+                                     toastr.success(data.message);
+                                     window.location.href= '/Role/Index?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])';
+                                 }else{
+                                     toastr.error(data.message);
+                                 }
+                             },
+                             error: function (xhr, textStatus, errorThrown) {
+                                 console.log('Error in Operation');
+                             }
+                         });
+                }
+    </script>

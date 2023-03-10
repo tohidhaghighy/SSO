@@ -1,0 +1,74 @@
+﻿@using SSO.Core.Models
+@using System.Globalization
+@model List<Application>
+
+@{
+    Layout = "~/Views/Shared/_LayoutApplication.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <a href="/Application/Insert?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])" class="btn btn-info">ثبت برنامه جدید</a>
+        </div>
+    </div>
+</div>
+
+<div class="card" id="roleGrid">
+    <div class="card-body">
+        <table id="example1" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th> آدرس سایت</th>
+                    <th> کلید دسترسی سایت</th>
+                    <th>تاریخ ثبت</th>
+                    <th>ویرایش / ثبت نقش / حذف</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var pc=new PersianCalendar();
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name </td>
+                            <td>@item.InnerLink </td>
+                            <td><a href="/Login?key=@item.GeneratedKey">@item.GeneratedKey</a> </td>
+                            <td>@string.Format("{0}/{1}/{2}", pc.GetYear(item.InsertDate), pc.GetMonth(item.InsertDate), pc.GetDayOfMonth(item.InsertDate))</td>
+                            <td>
+                                <a class="btn" title="ویرایش" href="/Application/Update?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&id=@item.Id"><i class="fa fa-edit" style="color:green;"></i></a>
+                                <a class="btn" title="درج نقش ها" href="/Application/InsertRoleAccess?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&roleid=@item.Id"><i class="fa fa-universal-access" style="color:green;"></i></a>
+                                <a class="btn" title="حذف" onclick="deleteitem(@item.Id)"><i class="fa fa-remove" style="color:red;"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+    function deleteitem(id){
+            $.ajax({
+               url: '/Application/Delete?id='+id,
+               type: 'POST',
+               dataType: 'json',
+               success: function (data) {
+                   if(data.status){
+                       toastr.success(data.message);
+                       window.location.reload();
+                   }else{
+                       toastr.error(data.message);
+                   }
+               },
+               error: function (xhr, textStatus, errorThrown) {
+                   console.log('Error in Operation');
+               }
+           });
+    }
+</script>
