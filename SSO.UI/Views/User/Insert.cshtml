@@ -1,0 +1,127 @@
+﻿
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">ثبت کابر جدید</h6>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام </label>
+                                <input type="text" class="form-control text-left" id="name" placeholder="نام" dir="ltr">
+                            </div>
+                            
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">نام خانوادگی</label>
+                                <input type="text" class="form-control text-left" id="family" placeholder="نام خانوادگی" dir="ltr">
+                            </div>
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">ایمیل </label>
+                                <input type="text" class="form-control text-left" id="email" placeholder="ایمیل" dir="ltr">
+                            </div>
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">موبایل</label>
+                                <input type="text" class="form-control text-left" id="mobile" placeholder="موبایل" dir="ltr">
+                            </div>
+                        </div>
+                         
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام کاربری </label>
+                                <input type="text" class="form-control text-left" id="username" placeholder="نام کاربری" dir="ltr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> پسورد </label>
+                                <input type="password" class="form-control text-left" id="password" placeholder="پسورد" dir="ltr">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نقش </label>
+                                <select class="form-control" name="role" id="role">
+                                    <option value="1">ادمین</option>
+                                    <option value="3">پذیرنده</option>
+                                    <option value="5">تامین کننده</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">تصویر </label>
+                                <input type="file" class="form-control text-left" id="image" aria-describedby="emailHelp" placeholder="ایمیل" dir="ltr">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary float-left" onclick="insert()">ثبت کاربر</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+                function insert(){
+                        toastr.options = {
+                            timeOut: 3000,
+                            progressBar: true,
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            showDuration: 200,
+                            hideDuration: 200
+                        };
+
+
+                    var e = document.getElementById("role");
+                    var roleid = e.value;
+                    var name=$('#name').val();
+                    var family=$('#family').val();
+                    var email=$('#email').val();
+                    var mobile=$('#mobile').val();
+                    var username=$('#username').val();
+                    var password=$('#password').val();
+                    var input = document.getElementById("image");
+                    var files = input.files;
+                    var formData = new FormData();
+
+                    if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
+                    if(family.length<3){toastr.error("نباید نام خانوادگی کوچکتر از 3 حرف باشد");return;}
+                    if(mobile.length!=11){toastr.error("شماره موبایل باید 11 رقم باشد");return;}
+                    if(username.length<8){toastr.error("نباید نام کاربری کوچکتر از 8 حرف باشد");return;}
+                    if(password.length<8){toastr.error("نباید پسورد کوچکتر از 8 حرف باشد");return;}
+                    formData.append("files", $("#image")[0].files[0]);
+
+                    if(username.length>8 && password.length>8){
+                       $.ajax({
+                             url: '/User/Insert?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&name='+name+'&family='+family+'&mobile='+mobile+'&email='+email+'&username='+username+'&password='+password+'&roleid='+roleid,
+                             type: 'POST',
+                             data: formData,
+                             processData:false,
+                             contentType:false,
+                             success: function (data) {
+                                 if(data.status){
+                                     toastr.success(data.message);
+                                     window.location.href= '/User/Index?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&role='+roleid;
+                                 }else{
+                                     toastr.error(data.message);
+                                 }
+                             },
+                             error: function (xhr, textStatus, errorThrown) {
+                                 console.log('Error in Operation');
+                             }
+                         });
+                    }else{
+                        
+                        toastr.error('نام کاربری و پسورد باید از 8 حرف بیشتر باشد');
+                    }
+                }
+    </script>

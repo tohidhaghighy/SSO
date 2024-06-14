@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>مدیریت برنامه ها </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Single-Sign-On-logo.png">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#5867dd">
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="~/vendors/bundle.css" type="text/css">
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="~/vendors/datepicker/daterangepicker.css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="~/vendors/slick/slick.css">
+    <link rel="stylesheet" href="~/vendors/slick/slick-theme.css">
+
+    <!-- Vmap -->
+    <link rel="stylesheet" href="~/vendors/vmap/jqvmap.min.css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="~/assets/css/app.css" type="text/css">
+</head>
+
+<body>
+
+    <!-- begin::page loader-->
+    <div class="page-loader">
+        <div class="spinner-border"></div>
+    </div>
+    <!-- end::page loader -->
+    <!-- begin::sidebar user profile -->
+    <div class="sidebar" id="userProfile">
+        <div class="text-center p-4">
+            <figure class="avatar avatar-state-success avatar-lg mb-4">
+                <img src="~/Single-Sign-On-logo.png" class="rounded-circle" alt="image">
+            </figure>
+            <h4 class="text-primary m-b-10">ادمین SSO</h4>
+            <p class="text-muted d-flex align-items-center justify-content-center line-height-0 mb-0">
+                فناوران پاسارگاد
+            </p>
+        </div>
+        <hr class="m-0">
+        <div class="p-4">
+            <div class="mb-4">
+                <h6 class="font-size-13 mb-3">شبکه های اجتماعی</h6>
+                <ul class="list-inline mb-4">
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-sm btn-floating btn-whatsapp">
+                            <i class="fa fa-whatsapp"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-sm btn-floating btn-linkedin">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- end::sidebar user profile -->
+    <!-- begin::navigation -->
+    <div class="navigation">
+        <div class="navigation-icon-menu">
+            <ul>
+                <li data-toggle="tooltip" title="صفحات">
+                    <a href="#navigationPages" title="صفحات کاربری">
+                        <i class="icon ti-user"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul>
+                <li data-toggle="tooltip" title="خروج">
+                    <a href="/Login" class="go-to-page">
+                        <i class="icon ti-power-off"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navigation-menu-body">
+            <ul id="navigationPages" class="navigation-active">
+                <li class="navigation-divider">کاربران سامانه</li>
+            </ul>
+        </div>
+    </div>
+    <!-- end::navigation -->
+    <!-- begin::header -->
+    <div class="header">
+
+        <!-- begin::header logo -->
+        <div class="header-logo">
+            
+        </div>
+        <!-- end::header logo -->
+        <!-- begin::header body -->
+        <div class="header-body">
+
+            <div class="header-body-left">
+
+                <h3 class="page-title">داشبورد</h3>
+
+                <!-- begin::breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">داشبورد</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">  مدیریت کاربران</li>
+                    </ol>
+                </nav>
+                <!-- end::breadcrumb -->
+
+            </div>
+
+            <div class="header-body-right">
+                <!-- begin::navbar main body -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="جستجو">
+                                <div class="input-group-append">
+                                    <button class="btn btn-light" type="button">
+                                        <i class="ti-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link bg-none" data-sidebar-open="#userProfile">
+                            <div>
+                                <figure class="avatar avatar-state-success avatar-sm">
+                                    <img src="~/Single-Sign-On-logo.png" class="rounded-circle" alt="image">
+                                </figure>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- end::navbar main body -->
+
+                <div class="d-flex align-items-center">
+                    <!-- begin::navbar navigation toggler -->
+                    <div class="d-xl-none d-lg-none d-sm-block navigation-toggler">
+                        <a href="#">
+                            <i class="ti-menu"></i>
+                        </a>
+                    </div>
+                    <!-- end::navbar navigation toggler -->
+                    <!-- begin::navbar toggler -->
+                    <div class="d-xl-none d-lg-none d-sm-block navbar-toggler">
+                        <a href="#">
+                            <i class="ti-arrow-down"></i>
+                        </a>
+                    </div>
+                    <!-- end::navbar toggler -->
+                </div>
+            </div>
+
+        </div>
+        <!-- end::header body -->
+
+    </div>
+    <!-- end::header -->
+    <!-- begin::main content -->
+    <main class="main-content">
+
+          @RenderBody()
+
+    </main>
+    <!-- end::main content -->
+    <!-- Plugin scripts -->
+    <script src="~/vendors/bundle.js"></script>
+
+    <!-- Chartjs -->
+    <script src="~/vendors/charts/chartjs/chart.min.js"></script>
+
+    <!-- Circle progress -->
+    <script src="~/vendors/circle-progress/circle-progress.min.js"></script>
+
+    <!-- Peity -->
+    <script src="~/vendors/charts/peity/jquery.peity.min.js"></script>
+    <script src="~/assets/js/examples/charts/peity.js"></script>
+
+    <!-- Datepicker -->
+    <script src="~/vendors/datepicker/daterangepicker.js"></script>
+
+    <!-- Slick -->
+    <script src="~/vendors/slick/slick.min.js"></script>
+
+    <!-- Vamp -->
+    <script src="~/vendors/vmap/jquery.vmap.min.js"></script>
+    <script src="~/vendors/vmap/maps/jquery.vmap.usa.js"></script>
+    <script src="~/assets/js/examples/vmap.js"></script>
+
+    <!-- Dashboard scripts -->
+    <script src="~/assets/js/examples/dashboard.js"></script>
+    <div class="colors">
+        <!-- To use theme colors with Javascript -->
+        <div class="bg-primary"></div>
+        <div class="bg-primary-bright"></div>
+        <div class="bg-secondary"></div>
+        <div class="bg-secondary-bright"></div>
+        <div class="bg-info"></div>
+        <div class="bg-info-bright"></div>
+        <div class="bg-success"></div>
+        <div class="bg-success-bright"></div>
+        <div class="bg-danger"></div>
+        <div class="bg-danger-bright"></div>
+        <div class="bg-warning"></div>
+        <div class="bg-warning-bright"></div>
+    </div>
+
+    <script src="~/vendors/dataTable/jquery.dataTables.min.js"></script>
+	<script src="~/vendors/dataTable/dataTables.bootstrap4.min.js"></script>
+	<script src="~/vendors/dataTable/dataTables.responsive.min.js"></script>
+	<script src="~/assets/js/examples/datatable.js"></script>
+
+    <!-- App scripts -->
+    <script src="~/assets/js/app.js"></script>
+</body>
+
+</html>

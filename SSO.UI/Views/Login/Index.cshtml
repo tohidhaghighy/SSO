@@ -1,0 +1,125 @@
+﻿@using SSO.Core.Models
+@model List<Role>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ورود به پنل مدیریت کاربران</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="~/Single-Sign-On-logo.png">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#5867dd">
+
+    <!-- Plugin styles -->
+    <link rel="stylesheet" href="~/vendors/bundle.css" type="text/css">
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="~/assets/css/app.css" type="text/css">
+</head>
+
+<body class="form-membership">
+
+    <!-- begin::page loader-->
+    <div class="page-loader">
+        <div class="spinner-border"></div>
+    </div>
+    <!-- end::page loader -->
+
+    <div class="form-wrapper">
+
+        <!-- logo -->
+        <div class="logo">
+            <img src="@ViewData["Image"]" alt="image">
+        </div>
+        <!-- ./ logo -->
+
+        <h5>  ورود @ViewData["Name"]</h5>
+
+        <!-- form -->
+        <form>
+            <input type="hidden" id="txtapplicationId" value="@ViewData["applicationId"]" />
+            <div class="form-group">
+                <input type="text" id="txtusername" class="form-control text-left" placeholder="نام کاربری یا ایمیل" dir="ltr" required autofocus>
+            </div>
+            <div class="form-group">
+                <input type="password" id="txtpassword" class="form-control text-left" placeholder="رمز عبور" dir="ltr" required>
+            </div>
+            <div class="form-group d-sm-flex justify-content-between text-left mb-4">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" checked id="customCheck1">
+                    <label class="custom-control-label" for="customCheck1">به خاطر سپاری</label>
+                </div>
+                <a class="d-block mt-2 mt-sm-0 line-height-28" href="/Login/RecoveryPass?key=@Context.Request.Query["key"]">بازنشانی رمز عبور</a>
+            </div>
+            <a class="btn btn-primary btn-block" onclick="login()">ورود</a>
+            <hr>
+            <p class="text-muted">حسابی ندارید؟</p>
+            <div class="row text-center">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <div class="col-6" style="margin-top: 5px;">
+                            <a href="/Register?key=@Context.Request.Query["key"]&role=@item.Id" class="btn btn-outline-light btn-block">ثبت نام @item.Name </a>
+                        </div>
+                    }
+                }
+            </div>
+        </form>
+        <!-- ./ form -->
+
+    </div>
+    <script>
+        function login(){
+            var username=$('#txtusername').val();
+            var password=$('#txtpassword').val();
+            var applicationId=$('#txtapplicationId').val();
+            toastr.options = {
+                    timeOut: 3000,
+                    progressBar: true,
+                    showMethod: "slideDown",
+                    hideMethod: "slideUp",
+                    showDuration: 200,
+                    hideDuration: 200
+                };
+            if(username.length>8 && password.length>8){
+               $.ajax({
+                     url: '/Login/Login',
+                     type: 'POST',
+                     dataType: 'json',
+                     data: {userName:username,password:password,applicationId:applicationId},
+                     success: function (data) {
+                         if(data.status){
+                             toastr.success(data.message);
+                             window.location.href= data.url+'?accessToken='+data.accessToken;
+                         }else{
+                             toastr.error(data.message);
+                         }
+                     },
+                     error: function (xhr, textStatus, errorThrown) {
+                         console.log('Error in Operation');
+                     }
+                 });
+            }else{
+
+                toastr.error('نام کاربری و پسورد باید از 8 حرف بیشتر باشد');
+            }
+        }
+    </script>
+
+    <!-- Plugin scripts -->
+    <script src="~/vendors/bundle.js"></script>
+
+    <!-- App scripts -->
+    <script src="~/assets/js/app.js"></script>
+</body>
+
+</html>

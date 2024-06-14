@@ -1,0 +1,58 @@
+﻿
+@using Authentication_Server.Core.Dtos.User
+@model List<UserDto>
+
+ <div class="card-body">
+        <table id="example1" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>نام کاربری</th>
+                    <th>نقش </th>
+                    <th>ایمیل</th>
+                    <th>موبایل</th>
+                    <th>فعال</th>
+                    <th>تایید</th>
+                    <th>ویرایش/ آدرس / نقش ها /  حذف </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FullName </td>
+                            <td>@item.UserName </td>
+                            <td>@item.RoleName </td>
+                            <td>@item.Email</td>
+                            <td>@item.Mobile</td>
+                            <td class="text-center align-items-center">
+                            @{
+                                if(item.Active){
+                                    <i class="fa fa-lock" style="color:green;"></i>
+                                }else{
+                                    <i class="fa fa-unlock" style="color:red;"></i>
+                                }
+                            }
+                            </td>
+                            <td>
+                            @{
+                                if(item.Active){
+                                    <a class="btn btn-info" onclick="DeActiveUser(@item.Id)">غیر فعال کن</a>
+                                }else{
+                                    <a class="btn btn-info" onclick="ActiveUser(@item.Id)">فعال کن</a>
+                                }
+                            }
+                            </td>
+                            <td>
+                                <a class="btn" title="ویرایش" href="/User/Update?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&id=@item.Id"><i class="fa fa-edit" style="color:green;"></i></a>
+                                <a class="btn" title="آدرس ها" href="/UserAddress/Index?userId=@item.Id"><i class="fa fa-map-marker" style="color:blue;"></i></a>
+                                <a class="btn" title="درج دسترسی ها" href="/User/InsesrtUserAccess?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&id=@item.Id"><i class="fa fa-universal-access" style="color:green;"></i></a>
+                                <a class="btn" title="حذف" onclick="deleteitem(@item.Id)"><i class="fa fa-remove" style="color:red;"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>

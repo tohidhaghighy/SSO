@@ -1,0 +1,133 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>ثبت نام  کاربران</title>
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="~/Single-Sign-On-logo.png">
+
+	<!-- Theme Color -->
+	<meta name="theme-color" content="#5867dd">
+
+	<!-- Plugin styles -->
+	<link rel="stylesheet" href="~/vendors/bundle.css" type="text/css">
+
+	<!-- App styles -->
+	<link rel="stylesheet" href="~/assets/css/app.css" type="text/css">
+</head>
+
+<body class="form-membership">
+
+	<!-- begin::page loader-->
+	<div class="page-loader">
+		<div class="spinner-border"></div>
+	</div>
+	<!-- end::page loader -->
+
+	<div class="form-wrapper">
+
+		<!-- logo -->
+        <div class="logo">
+            <img src="@ViewData["Image"]" alt="image">
+        </div>
+        <!-- ./ logo -->
+
+        <h5>  ایجاد حساب @ViewData["Name"]</h5>
+
+		<!-- form -->
+		<div>
+			<input type="hidden" id="txtapplicationId" value="@ViewData["applicationId"]"/>
+			<div class="form-group">
+				<input type="text" class="form-control" id="name" placeholder="نام" required autofocus>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" id="family" placeholder="نام خانوادگی" required>
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" id="mobile" placeholder="موبایل" required>
+			</div>
+			<div class="form-group">
+				<input type="email" class="form-control text-left" id="email" placeholder="ایمیل" dir="ltr" required>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control text-left" id="username" placeholder="نام کاربری" dir="ltr" required>
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control text-left" id="password" placeholder="رمز عبور" dir="ltr" required>
+			</div>
+			<a class="btn btn-primary btn-block" id="btnregister" onclick="register()">ثبت نام</a>
+			<hr>
+			<p class="text-muted">حساب کاربری دارید؟</p>
+			<a href="/Login?key=@Context.Request.Query["key"]" class="btn btn-outline-light btn-sm">وارد شوید!</a>
+		</div>
+		<!-- ./ form -->
+
+	</div>
+    <script>
+                function register(){
+                    document.getElementById("btnregister").disabled = true;
+                        toastr.options = {
+                            timeOut: 10000,
+                            progressBar: true,
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            showDuration: 200,
+                            hideDuration: 200
+                        };
+
+
+                    var name=$('#name').val();
+                    var family=$('#family').val();
+                    var email=$('#email').val();
+                    var mobile=$('#mobile').val();
+                    var username=$('#username').val();
+                    var password=$('#password').val();
+
+                    if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
+                    if(family.length<3){toastr.error("نباید نام خانوادگی کوچکتر از 3 حرف باشد");return;}
+                    if(mobile.length!=11){toastr.error("شماره موبایل باید 11 رقم باشد");return;}
+                    if(username.length<8){toastr.error("نباید نام کاربری کوچکتر از 8 حرف باشد");return;}
+                    if(password.length<8){toastr.error("نباید پسورد کوچکتر از 8 حرف باشد");return;}
+
+                    if(username.length>8 && password.length>8){
+                       $.ajax({
+                             url: '/User/InsertBeforeLogin?key=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["key"])&name='+name+'&family='+family+'&mobile='+mobile+'&email='+email+'&username='+username+'&password='+password+'&roleid=@Context.Request.Query["role"]',
+                             type: 'POST',
+                             processData:false,
+                             contentType:false,
+                             success: function (data) {
+                                 if(data.status){
+                                     toastr.success(data.message);
+                                     //window.location.href= '/Login/Index?key=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["key"])';
+                                 }else{
+                                     toastr.error(data.message);
+                                 }
+                                 document.getElementById("btnregister").disabled = false;
+                             },
+                             error: function (xhr, textStatus, errorThrown) {
+                                 console.log('Error in Operation');
+                             }
+                         });
+                    }else{
+                        
+                        toastr.error('نام کاربری و پسورد باید از 8 حرف بیشتر باشد');
+                    }
+                }
+    </script>
+
+	<!-- Plugin scripts -->
+	<script src="~/vendors/bundle.js"></script>
+
+	<!-- App scripts -->
+	<script src="~/assets/js/app.js"></script>
+</body>
+
+</html>

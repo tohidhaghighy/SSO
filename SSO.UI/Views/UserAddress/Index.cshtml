@@ -1,0 +1,72 @@
+﻿@using SSO.Core.Models
+@model List<UserAddress>
+
+
+<div class="card" id="userlist">
+    <div class="card-body">
+        <table id="example1" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>کد پستی</th>
+                    <th>GpsX </th>
+                    <th>GpsY</th>
+                    <th>فعال</th>
+                    <th> حذف</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name </td>
+                            <td>@item.PostalCode </td>
+                            <td>@item.GpsX </td>
+                            <td>@item.GpsY</td>
+                            <td class="text-center align-items-center">
+                                @{
+                                    if (item.IsActive)
+                                    {
+                                        <i class="fa fa-lock " style="color:green;"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-unlock " style="color:red;"></i>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a class="btn" title="حذف" onclick="deleteitem(@item.Id)"><i class="fa fa-remove" style="color:red;"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+    function deleteitem(id){
+           $.ajax({
+               url: '/UserAddress/Delete?id='+id,
+               type: 'POST',
+               dataType: 'json',
+               success: function (data) {
+                   if(data.status){
+                       toastr.success(data.message);
+                       updateGrid();
+                   }else{
+                       toastr.error(data.message);
+                   }
+               },
+               error: function (xhr, textStatus, errorThrown) {
+                   console.log('Error in Operation');
+               }
+           });
+    }
+</script>

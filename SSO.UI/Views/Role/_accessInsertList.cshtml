@@ -1,0 +1,14 @@
+﻿@using SSO.Core.Models
+
+@model List<Access>
+@{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name </td>
+            <td>@item.Endpoint </td>
+            <td>@item.EndpointType</td>
+            <td><a onclick="insertAccessToRole(@item.Id)"><span class="fa fa-plus" style="color:blue;"></span></a></td>
+        </tr>
+    }
+}

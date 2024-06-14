@@ -1,0 +1,120 @@
+﻿@using Authentication_Server.UI.ViewModel
+@using System.Globalization
+@model RoleAcceessViewModel
+
+<div class="card" id="accessGrid">
+    <div class="card-body">
+        <table id="example1" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>Endpoint</th>
+                    <th>نوع درخواست</th>
+                    <th>ثبت</th>
+                </tr>
+            </thead>
+            <tbody id="unSelectedAccessList">
+                @{
+                    foreach (var item in Model.unSelectedAccess)
+                    {
+                        <tr>
+                            <td>@item.Name </td>
+                            <td>@item.Endpoint </td>
+                            <td>@item.EndpointType</td>
+                            <td><a onclick="insertAccessToRole(@item.Id)"><span class="fa fa-plus" style="color:blue;"></span></a></td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="card" id="roleaccessGrid">
+    <div class="card-body">
+        <table id="example1" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>Endpoint</th>
+                    <th>نوع درخواست</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody id="SelectedAccessList">
+                @{
+                    var pc = new PersianCalendar();
+                    foreach (var item in Model.SelectedAccess)
+                    {
+                        <tr>
+                            <td>@item.Name </td>
+                            <td>@item.Endpoint </td>
+                            <td>@item.EndpointType</td>
+                            <td><a onclick="deletefromAccess(@item.Id)"><span class="fa fa-remove" style="color:red;"></span></a></td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function updateGrid(){
+        var name = $('#name').val();
+        var endpoint = $('#endpoint').val();
+        $("#accessGrid").empty();
+        $("#accessGrid").load("/Access/Search?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&name="+name+"&endpoint="+endpoint);
+    }
+
+    function updateGrids(){
+        $("#unSelectedAccessList").empty();
+        $("#unSelectedAccessList").load("/Role/RoleAccessList?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&roleid=@Context.Request.Query["roleid"]&reqType=1");
+
+        $("#SelectedAccessList").empty();
+        $("#SelectedAccessList").load("/Role/RoleAccessList?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&roleid=@Context.Request.Query["roleid"]&reqType=2");
+
+    }
+
+    function insertAccessToRole(id){
+        $.ajax({
+                  url: '/RoleAccess/Insert?roleId=@Context.Request.Query["roleid"]&accessId='+id,
+                  type: 'POST',
+                  dataType: 'json',
+                  success: function (data) {
+                      if(data.status){
+                          toastr.success(data.message);
+                          updateGrids();
+                      }else{
+                          toastr.error(data.message);
+                      }
+                  },
+                  error: function (xhr, textStatus, errorThrown) {
+                      console.log('Error in Operation');
+                  }
+              });
+    }
+
+    function deletefromAccess(id){
+        $.ajax({
+                  url: '/RoleAccess/DeleteItem?id='+id,
+                  type: 'POST',
+                  dataType: 'json',
+                  success: function (data) {
+                      if(data.status){
+                          toastr.success(data.message);
+                          updateGrids();
+                      }else{
+                          toastr.error(data.message);
+                      }
+                  },
+                  error: function (xhr, textStatus, errorThrown) {
+                      console.log('Error in Operation');
+                  }
+              });
+    }
+
+</script>

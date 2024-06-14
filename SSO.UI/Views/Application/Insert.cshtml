@@ -1,0 +1,75 @@
+﻿
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">ثبت برنامه جدید</h6>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">نام </label>
+                                <input type="text" class="form-control text-left" id="name" placeholder="نام" dir="ltr">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">آدرس سایت</label>
+                                <input type="text" class="form-control text-left" id="urlpanel" placeholder="آدرس سایت" dir="ltr">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">کلید ورود به سایت </label>
+                                <input type="text" class="form-control text-left" id="keypanel" placeholder="کلید ورود به سایت پنل" dir="ltr">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">آدرس اینترنتی ایکون </label>
+                                <input type="text" class="form-control text-left" id="icon" placeholder="آدرس اینترنتی ایکون" dir="ltr">
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary float-left" onclick="insertApplication()">ثبت برنامه</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+                function insertApplication(){
+                        toastr.options = {
+                            timeOut: 3000,
+                            progressBar: true,
+                            showMethod: "slideDown",
+                            hideMethod: "slideUp",
+                            showDuration: 200,
+                            hideDuration: 200
+                        };
+
+
+                    var name=$('#name').val();
+                    var urlpanel=$('#urlpanel').val();
+                    var keypanel=$('#keypanel').val();
+                    var icon=$('#icon').val();
+
+                    if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
+                    if(urlpanel.length<3){toastr.error("نباید ادرس سایت کوچکتر از 3 حرف باشد");return;}
+                    if(keypanel.length<3){toastr.error("نباید کلید سایت کوچکتر از 3 حرف باشد");return;}
+                    if(icon.length<3){toastr.error("نباید ایکون پنل کوچکتر از 3 حرف باشد");return;}
+
+                    $.ajax({
+                             url: '/Application/Insert?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&name='+name+'&urlpanel='+urlpanel+'&keypanel='+keypanel+'&icon='+icon,
+                             type: 'POST',
+                             dataType: 'json',
+                             success: function (data) {
+                                 if(data.status){
+                                     toastr.success(data.message);
+                                     window.location.href= '/Application/Index?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])';
+                                 }else{
+                                     toastr.error(data.message);
+                                 }
+                             },
+                             error: function (xhr, textStatus, errorThrown) {
+                                 console.log('Error in Operation');
+                             }
+                         });
+                }
+    </script>

@@ -1,0 +1,97 @@
+﻿@using Authentication_Server.UI.ViewModel
+@model MainViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-title d-flex justify-content-between align-items-center">
+            <h6> کاربران </h6>
+        </div>
+        <div class="row slick-single-item">
+            @{
+                foreach (var item in Model.RoleList)
+                {
+                    <div class="col-xl-3 col-lg-6 col-lg-6 col-sm-12">
+                        <div class="card border mb-0">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div>
+                                        <div class="icon-block icon-block-sm bg-danger icon-block-floating mr-2">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <span class="font-size-13">@item.RoleName</span>
+                                    <h2 class="mb-0 ml-auto font-weight-bold text-danger primary-font line-height-30">@item.UserCount</h2>
+                                </div>
+                                <div class="progress" style="height: 5px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="col-xl-3 col-lg-6 col-lg-6 col-sm-12">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title m-b-20">گزارشات</h6>
+                <div class="row m-b-20">
+                    <div class="col-sm-6 text-primary mb-2 mb-sm-0">
+                        <h5 class="font-size-23 primary-font line-height-36 m-b-5">200 <span class="font-size-16">نفر</span></h5>
+                        <h6 class="font-size-13 primary-font">مجموع پذیرندگان</h6>
+                    </div>
+                    <div class="col-sm-6 text-success">
+                        <h5 class="font-size-23 primary-font line-height-36 m-b-5"> 9 <span class="font-size-16">نفر</span></h5>
+                        <h6 class="font-size-13 primary-font">مجموع تامین کنندگان</h6>
+                    </div>
+                </div>
+                <canvas id="chart_demo_1"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                پذیرندگان جدید
+                <a href="#" class="js-card-refresh link-1">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+            <div class="card-body pt-2">
+                <ul class="list-group list-group-flush">
+                    @{
+                        foreach (var item in Model.UserList)
+                        {
+                            <li class="list-group-item d-flex align-items-center p-l-r-0">
+                                <figure class="avatar avatar-sm avatar-state-success m-r-15">
+                                    <span class="avatar-title bg-primary rounded-circle">و</span>
+                                </figure>
+                                <div>
+                                    <h6 class="m-b-0 primary-font">@item.Name @item.Family</h6>
+                                    <small class="text-muted">@item.Mobile</small>
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-accept-policy" aria-hidden="true">تایید نشده </i>
+                                    </a>
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+                <a href="/User/Index?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&role=3" class="btn btn-block text-center font-size-13 p-b-0">
+                    مشاهده همه
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
