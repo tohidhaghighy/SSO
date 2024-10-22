@@ -39,9 +39,9 @@ namespace Authentication_Server.Application.Services.User
             return result;
         }
 
-        public async Task<SSO.Core.Models.User> GetUser(string accessToken)
+        public async Task<SSO.Core.Models.User> GetUser()
         {
-            var result = await _dbContext.Users.Where(a => a.Token == accessToken).FirstOrDefaultAsync();
+            var result = await _dbContext.Users.Where(a=>a.ApplicationId==2).FirstOrDefaultAsync();
             return result;
         }
 

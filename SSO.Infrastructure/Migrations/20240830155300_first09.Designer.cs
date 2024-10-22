@@ -12,8 +12,8 @@ using SSO.Infrastructure;
 namespace Authentication_Server.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20230308193034_updaterelations")]
-    partial class updaterelations
+    [Migration("20240830155300_first09")]
+    partial class first09
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,30 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Applications");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            GeneratedKey = "123456789",
+                            Icon = "",
+                            InnerLink = "",
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8769),
+                            InsertUserName = "admin",
+                            Name = "سامانه SSO",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8757)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GeneratedKey = "1234",
+                            Icon = "",
+                            InnerLink = "",
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8771),
+                            InsertUserName = "admin",
+                            Name = "سامانه تیکتینگ ویرا",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8771)
+                        });
                 });
 
             modelBuilder.Entity("SSO.Core.Models.ApplicationRediretUrl", b =>
@@ -130,6 +154,65 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ApplicationRediretUrls");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProvinceId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.Province", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Provinces");
                 });
 
             modelBuilder.Entity("SSO.Core.Models.Role", b =>
@@ -164,6 +247,78 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApplicationId = 1,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8846),
+                            InsertUserName = "admin",
+                            Name = "ادمین سامانه SSO",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8847),
+                            UrlPanel = "https://localhost:7062/Home/Index"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8848),
+                            InsertUserName = "admin",
+                            Name = "ادمین سامانه مدیریت پرونده ها",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8848),
+                            UrlPanel = "http://localhost:3000/api"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8849),
+                            InsertUserName = "admin",
+                            Name = "ادمین سامانه میز خدمت",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8849),
+                            UrlPanel = "http://localhost:3000/api"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8850),
+                            InsertUserName = "admin",
+                            Name = "ادمین تعزیرات",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8851),
+                            UrlPanel = "http://localhost:3000/api"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8853),
+                            InsertUserName = "admin",
+                            Name = "ادمین ویرا",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8853),
+                            UrlPanel = "http://localhost:3000/api"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8854),
+                            InsertUserName = "admin",
+                            Name = "ادمین سامانه امحا",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8854),
+                            UrlPanel = "http://localhost:3000/api"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ApplicationId = 2,
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8855),
+                            InsertUserName = "admin",
+                            Name = "ادمین سامانه تبادل اطلاعات",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8855),
+                            UrlPanel = "http://localhost:3000/api"
+                        });
                 });
 
             modelBuilder.Entity("SSO.Core.Models.RoleAccess", b =>
@@ -269,6 +424,28 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = true,
+                            ApplicationId = 1,
+                            Email = "",
+                            Family = "superuser",
+                            Image = "",
+                            InsertDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8868),
+                            InsertUserName = "admin",
+                            Mobile = "",
+                            Name = "superuser",
+                            Password = "aosxGe1VJ8FIz3wnfJTdYnV1sl/swHqF7NbWdmdgkIc=",
+                            RefreshToken = "t6UHmvVLRkg2d0OsvTR0gdkAY77slk59Ryww0SvsBTc=",
+                            RefreshTokenExpiryTime = new DateTime(2027, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8871),
+                            RoleId = 1,
+                            Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIxNCIsIlVzZXJuYW1lIjoic3VwZXJ1c2VyIiwiVXNlclJvbGUiOiIxMCIsImV4cCI6MTcyNTIwMzQyNiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDoyODc0Ny8iLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjI4NzQ3LyJ9.RYvoJhqSnZHcLaoKKXotdms4dJBNGRazEaqoYONdMAQ",
+                            UpdateDate = new DateTime(2024, 8, 30, 19, 23, 0, 627, DateTimeKind.Local).AddTicks(8867),
+                            UserName = "superUser"
+                        });
                 });
 
             modelBuilder.Entity("SSO.Core.Models.UserAccess", b =>
@@ -304,9 +481,71 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.ToTable("UserAccesses");
                 });
 
+            modelBuilder.Entity("SSO.Core.Models.UserAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GpsX")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GpsY")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddresses");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.City", b =>
+                {
+                    b.HasOne("SSO.Core.Models.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
+                });
+
             modelBuilder.Entity("SSO.Core.Models.RoleAccess", b =>
                 {
-                    b.HasOne("SSO.Core.Models.Access", "Access")
+                    b.HasOne("SSO.Core.Models.Access", "Accesses")
                         .WithMany()
                         .HasForeignKey("AccessId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -318,7 +557,7 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Access");
+                    b.Navigation("Accesses");
 
                     b.Navigation("Role");
                 });
@@ -336,7 +575,7 @@ namespace Authentication_Server.Infrastructure.Migrations
 
             modelBuilder.Entity("SSO.Core.Models.UserAccess", b =>
                 {
-                    b.HasOne("SSO.Core.Models.Access", "Access")
+                    b.HasOne("SSO.Core.Models.Access", "Accesses")
                         .WithMany()
                         .HasForeignKey("AccessId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -348,7 +587,18 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Access");
+                    b.Navigation("Accesses");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.UserAddress", b =>
+                {
+                    b.HasOne("SSO.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

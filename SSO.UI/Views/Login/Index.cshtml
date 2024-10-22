@@ -1,5 +1,5 @@
-﻿@using SSO.Core.Models
-@model List<Role>
+﻿@* @using SSO.Core.Models
+@model List<Role> *@
 @{
     Layout = null;
 }
@@ -38,11 +38,11 @@
 
         <!-- logo -->
         <div class="logo">
-            <img src="@ViewData["Image"]" alt="image">
+            <img src="@ViewData["Image"]" alt="image" style="width:50px;height:50px;">
         </div>
         <!-- ./ logo -->
 
-        <h5>  ورود @ViewData["Name"]</h5>
+        <h5>  سامانه یکپارچه ورود سامانه تیکتینگ ویرا</h5>
 
         <!-- form -->
         <form>
@@ -58,12 +58,13 @@
                     <input type="checkbox" class="custom-control-input" checked id="customCheck1">
                     <label class="custom-control-label" for="customCheck1">به خاطر سپاری</label>
                 </div>
-                <a class="d-block mt-2 mt-sm-0 line-height-28" href="/Login/RecoveryPass?key=@Context.Request.Query["key"]">بازنشانی رمز عبور</a>
+                @* <a class="d-block mt-2 mt-sm-0 line-height-28" href="/Login/RecoveryPass?key=@Context.Request.Query["key"]">بازنشانی رمز عبور</a> *@
             </div>
             <a class="btn btn-primary btn-block" onclick="login()">ورود</a>
-            <hr>
+
+            @* <hr>
             <p class="text-muted">حسابی ندارید؟</p>
-            <div class="row text-center">
+             <div class="row text-center">
                 @{
                     foreach (var item in Model)
                     {
@@ -72,7 +73,7 @@
                         </div>
                     }
                 }
-            </div>
+            </div> *@
         </form>
         <!-- ./ form -->
 
@@ -90,7 +91,7 @@
                     showDuration: 200,
                     hideDuration: 200
                 };
-            if(username.length>8 && password.length>8){
+            if(username.length>6 && password.length>6){
                $.ajax({
                      url: '/Login/Login',
                      type: 'POST',
@@ -99,7 +100,12 @@
                      success: function (data) {
                          if(data.status){
                              toastr.success(data.message);
-                             window.location.href= data.url+'?accessToken='+data.accessToken;
+                             if (@ViewData["ApplicationId"]== 1) {
+                                window.location.href = data.url + '?accessToken=' + data.accessToken;
+                             } else {
+                                window.location.href = data.url + '/' + data.userid + '/' + data.accessToken;
+                             }
+                             
                          }else{
                              toastr.error(data.message);
                          }
@@ -110,7 +116,7 @@
                  });
             }else{
 
-                toastr.error('نام کاربری و پسورد باید از 8 حرف بیشتر باشد');
+                toastr.error('نام کاربری و پسورد باید از 6 حرف بیشتر باشد');
             }
         }
     </script>

@@ -21,7 +21,7 @@ namespace Authentication_Server.UI.Controllers
 
         public async Task<IActionResult> Index(string accessKey)
         {
-            return View(await ApplicationService.GetApplicationList("",""));
+            return View(await ApplicationService.GetApplicationList(accessKey,""));
         }
 
         public async Task<IActionResult> Insert()
@@ -38,7 +38,7 @@ namespace Authentication_Server.UI.Controllers
                 {
                     return Json(new { status = false, message = "توکن در درخواست وجود ندارد" });
                 }
-                var user = await UserService.GetUser(accessToken);
+                var user = await UserService.GetUser();
                 if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
                 {
                     return Json(new { status = false, message = "کاربر مورد نظر وجود ندارد" });
@@ -103,7 +103,7 @@ namespace Authentication_Server.UI.Controllers
                 {
                     return Json(new { status = false, message = "توکن در درخواست وجود ندارد" });
                 }
-                var user = await UserService.GetUser(accessToken);
+                var user = await UserService.GetUser();
                 if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
                 {
                     return Json(new { status = false, message = "کاربر مورد نظر وجود ندارد" });

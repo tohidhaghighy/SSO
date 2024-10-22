@@ -12,6 +12,18 @@ builder.Services.AddDbContext<AuthenticationDbContext>(opts =>
 builder.Services.Configure<JwtInfo>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddMyDependencyGroup();
 builder.Services.AddControllersWithViews();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(corsPolicyBuilder =>
+    {
+        corsPolicyBuilder
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:3000", "http://127.0.0.1:1889", "http://127.0.0.1:3000")
+            .SetIsOriginAllowedToAllowWildcardSubdomains();
+    });
+});
 
 var app = builder.Build();
 
@@ -26,6 +38,7 @@ app.UseMiddleware<InjectionMiddleware>();
 
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors();
 
 app.UseRouting();
 

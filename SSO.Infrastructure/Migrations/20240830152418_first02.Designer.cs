@@ -12,8 +12,8 @@ using SSO.Infrastructure;
 namespace Authentication_Server.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20230304145907_updatecolumns")]
-    partial class updatecolumns
+    [Migration("20240830152418_first02")]
+    partial class first02
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,8 +40,9 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EndpointType")
-                        .HasColumnType("int");
+                    b.Property<string>("EndpointType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
@@ -131,6 +132,65 @@ namespace Authentication_Server.Infrastructure.Migrations
                     b.ToTable("ApplicationRediretUrls");
                 });
 
+            modelBuilder.Entity("SSO.Core.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProvinceId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.Province", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Provinces");
+                });
+
             modelBuilder.Entity("SSO.Core.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -191,6 +251,10 @@ namespace Authentication_Server.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccessId");
+
+                    b.HasIndex("RoleId");
+
                     b.ToTable("RoleAccesses");
                 });
 
@@ -212,7 +276,7 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("Family")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -228,6 +292,10 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -288,7 +356,92 @@ namespace Authentication_Server.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccessId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("UserAccesses");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.UserAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GpsX")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GpsY")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsertUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddresses");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.City", b =>
+                {
+                    b.HasOne("SSO.Core.Models.Province", "Province")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Province");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.RoleAccess", b =>
+                {
+                    b.HasOne("SSO.Core.Models.Access", "Accesses")
+                        .WithMany()
+                        .HasForeignKey("AccessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SSO.Core.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Accesses");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("SSO.Core.Models.User", b =>
@@ -300,6 +453,36 @@ namespace Authentication_Server.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.UserAccess", b =>
+                {
+                    b.HasOne("SSO.Core.Models.Access", "Accesses")
+                        .WithMany()
+                        .HasForeignKey("AccessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SSO.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Accesses");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SSO.Core.Models.UserAddress", b =>
+                {
+                    b.HasOne("SSO.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SSO.Core.Models.Role", b =>

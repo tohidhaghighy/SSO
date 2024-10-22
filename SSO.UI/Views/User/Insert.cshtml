@@ -49,9 +49,12 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">نقش </label>
                                 <select class="form-control" name="role" id="role">
-                                    <option value="1">ادمین</option>
-                                    <option value="3">پذیرنده</option>
-                                    <option value="5">تامین کننده</option>
+                                    <option value="2">ادمین سامانه مدیریت پرونده ها</option>
+                                    <option value="3">ادمین سامانه میز خدمت</option>
+                                    <option value="4"> ادمین تعزیرات </option>
+                                    <option value="5">ادمین ویرا  </option>
+                                    <option value="6">ادمین سامانه امحا   </option>
+                                    <option value="7">ادمین سامانه تبادل اطلاعات  </option>
                                 </select>
                             </div>
                         </div>
@@ -96,11 +99,11 @@
                     if(name.length<3){toastr.error("نباید نام کوچکتر از 3 حرف باشد");return;}
                     if(family.length<3){toastr.error("نباید نام خانوادگی کوچکتر از 3 حرف باشد");return;}
                     if(mobile.length!=11){toastr.error("شماره موبایل باید 11 رقم باشد");return;}
-                    if(username.length<8){toastr.error("نباید نام کاربری کوچکتر از 8 حرف باشد");return;}
-                    if(password.length<8){toastr.error("نباید پسورد کوچکتر از 8 حرف باشد");return;}
+                    if(username.length<6){toastr.error("نباید نام کاربری کوچکتر از 6 حرف باشد");return;}
+                    if(password.length<6){toastr.error("نباید پسورد کوچکتر از 6 حرف باشد");return;}
                     formData.append("files", $("#image")[0].files[0]);
 
-                    if(username.length>8 && password.length>8){
+                    if(username.length>6 && password.length>6){
                        $.ajax({
                              url: '/User/Insert?accessToken=@System.Web.HttpUtility.UrlEncode(Context.Request.Query["accessToken"])&name='+name+'&family='+family+'&mobile='+mobile+'&email='+email+'&username='+username+'&password='+password+'&roleid='+roleid,
                              type: 'POST',

@@ -36,7 +36,7 @@ namespace SSO.UI.Controllers
             ViewData["Image"] = result.FirstOrDefault().Icon;
             ViewData["Name"] = result.FirstOrDefault().Name;
             ViewData["ApplicationId"] = result.FirstOrDefault().Id;
-            return View(await RoleService.GetApplicationRole(result.FirstOrDefault().Id));
+            return View();//await RoleService.GetApplicationRole(result.FirstOrDefault().Id)
         }
 
         [HttpPost]
@@ -72,7 +72,7 @@ namespace SSO.UI.Controllers
                     var updateUser = await UserService.UpdateUserToken(userInfo.Id, accessToken, refreshToken, expiredTime);
                     if (updateUser != null)
                     {
-                        return Json(new { url = findrole.UrlPanel , accessToken = System.Web.HttpUtility.UrlEncode(accessToken)  , refreshToken = System.Web.HttpUtility.UrlEncode(refreshToken) , expiredTime = System.Web.HttpUtility.UrlEncode(expiredTime.ToString()) , status = true , message = "لاگین با موفقیت انجام شد کمی بعد به سایت مربوطه منتثل می شوید"});
+                        return Json(new { userid=userInfo.Id ,url = findrole.UrlPanel , accessToken = System.Web.HttpUtility.UrlEncode(accessToken)  , refreshToken = System.Web.HttpUtility.UrlEncode(refreshToken) , expiredTime = System.Web.HttpUtility.UrlEncode(expiredTime.ToString()) , status = true , message = "لاگین با موفقیت انجام شد کمی بعد به سایت مربوطه منتقل می شوید"});
                     }
                 }
             }

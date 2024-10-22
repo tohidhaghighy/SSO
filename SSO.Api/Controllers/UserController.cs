@@ -38,5 +38,12 @@ namespace SSO.Api.Controllers
             var finduserList = await userService.GetUserList(findApplication.FirstOrDefault().Id, "", "", "", "",0);
             return Json(new { success=true, data = finduserList.Select(a=>new {a.UserName,a.Id,a.Name,a.Family }),error =""});
         }
+
+        [HttpGet("RoleList")]
+        public async Task<JsonResult> RoleListGet()
+        {
+            var findroleList = await roleService.GetRoleList(2, "", "");
+            return Json(new { success = true, data = findroleList.Select(a => new { a.Id, a.Name }), error = "" });
+        }
     }
 }

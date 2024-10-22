@@ -38,12 +38,9 @@ namespace SSO.UI.Controllers
             {
                 return Redirect("/Login");
             }
-            var user = await userService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-            {
-                return Redirect("/Login");
-            }
-            var userList = await userService.GetUserList(user.ApplicationId, "", "", "", "", role);
+            var user = await userService.GetUser();
+            
+            var userList = await userService.GetUserList(2, "", "", "", "", 0);
             var listDto = new List<UserDto>();
             foreach (var item in userList)
             {
@@ -66,7 +63,7 @@ namespace SSO.UI.Controllers
                 });
             }
 
-            ViewData["Name"] = (role == 3 ? "پذیرندگان" : "تامین کنندگان");
+            ViewData["Name"] = "";
             return View(listDto);
         }
 
@@ -81,12 +78,8 @@ namespace SSO.UI.Controllers
             {
                 return PartialView("_userList", listDto);
             }
-            var user = await userService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-            {
-                return PartialView("_userList", listDto);
-            }
-            var userList = await userService.GetUserList(user.ApplicationId, name, "", mobile, email , role);
+            var user = await userService.GetUser();
+            var userList = await userService.GetUserList(2, name, "", mobile, email , role);
             foreach (var item in userList)
             {
                 var roleInfo = await roleService.GetRole(item.RoleId);
@@ -117,11 +110,6 @@ namespace SSO.UI.Controllers
             {
                 return Redirect("/Login");
             }
-            var user = await userService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-            {
-                return Redirect("/Login");
-            }
             return View();
         }
 
@@ -134,11 +122,7 @@ namespace SSO.UI.Controllers
                 {
                     return Redirect("/Login");
                 }
-                var user = await userService.GetUser(accessToken);
-                if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-                {
-                    return Redirect("/Login");
-                }
+                var user = await userService.GetUser();
                 string imagePath = "";
                 if (files != null)
                 {
@@ -165,7 +149,7 @@ namespace SSO.UI.Controllers
                     UserName = username,
                     Password = hashpass,
                     Active = true,
-                    ApplicationId = user.ApplicationId,
+                    ApplicationId = 2,
                     Email = (email==null?"": email),
                     Mobile = mobile,
                     Name = name,
@@ -224,7 +208,7 @@ namespace SSO.UI.Controllers
             {
                 return Redirect("/Login");
             }
-            var user = await userService.GetUser(accessToken);
+            var user = await userService.GetUser();
             if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
             {
                 return Redirect("/Login");
