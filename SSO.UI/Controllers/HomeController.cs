@@ -25,20 +25,16 @@ namespace SSO.UI.Controllers
             var mainModel = new MainViewModel();
             if (accessToken=="" || accessToken == null)
             {
-                return Redirect("/Login");
+                return Redirect("/Login?key=1234");
             }
-            var user = await userService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime<DateTime.Now)
-            {
-                return Redirect("/Login");
-            }
-            var userRole = await roleService.GetRoleList(user.ApplicationId, "", "");
+            var user = await userService.GetUser();
+            var userRole = await roleService.GetRoleList(2, "", "");
             if (userRole.Count()>0)
             {
                 var roleList = new List<RoleViewModel>();
                 foreach (var item in userRole)
                 {
-                    var finduser= await userService.GetUserList(user.ApplicationId,"","","","",item.Id);
+                    var finduser= await userService.GetUserList(2,"","","","",item.Id);
                     roleList.Add(new RoleViewModel()
                     {
                         RoleId = item.Id,
@@ -47,7 +43,7 @@ namespace SSO.UI.Controllers
                     });
                 }
                 mainModel.RoleList = roleList;
-                var userlist =await userService.GetUserList(user.ApplicationId, "", "", "", "", 0);
+                var userlist =await userService.GetUserList(2, "", "", "", "", 0);
                 mainModel.UserList = userlist.Where(a=>a.Active==false).
                     OrderByDescending(a=>a.Id).ToList();
             }

@@ -32,25 +32,51 @@ namespace SSO.Api.Controllers
             this.roleAccessService = roleAccessService;
         }
 
-        [HttpGet("Token/{userid}")]
-        public async Task<JsonResult> Get(int userid , string accesstoken)
+        [HttpPost("Token")]
+        public async Task<JsonResult> Post([FromBody]userToken userToken)
         {
-            var findUser = await userService.GetUser(accesstoken);
+            var findUser = await userService.GetUserById(userToken.userid);
+            var ListRoles = await roleService.GetRoleList(2, "", "");
             if (findUser == null)
                 return Json(new { success = false, error = "توکن مورد نظر موجود نیست" });
-            if (findUser.Id==userid)
+            if (findUser.Id== userToken.userid)
             {
-                return Json(new { success = true, token = GenerateJWTToken.GenerateToken(new Infrastructure.Model.UserModel()
+                return Json(new
                 {
-                    UserId = userid,
-                    Name=findUser.Name,
-                    Family=findUser.Family,
-                    Username=findUser.UserName,
-                    Mobile=findUser.Mobile,
-                    UserRole=findUser.RoleId.ToString()
-                },Options.Value.Key,Options.Value.Audience,Options.Value.Issuer), error = "" });
+                    success = true,
+                    data = new
+                    {
+                        UserId = userToken.userid,
+                        Name = findUser.Name,
+                        Family = findUser.Family,
+                        Username = findUser.UserName,
+                        Mobile = findUser.Mobile,
+                        UserRole = findUser.RoleId.ToString(),
+                        UserRoleList = ListRoles.Select(x=>new
+                        {
+                            x.Id,
+                            x.Name
+                        })
+                    },
+                    error = ""
+                });
+                //return Json(new { success = true, token = GenerateJWTToken.GenerateToken(new Infrastructure.Model.UserModel()
+                //{
+                //    UserId = userToken.userid,
+                //    Name=findUser.Name,
+                //    Family=findUser.Family,
+                //    Username=findUser.UserName,
+                //    Mobile=findUser.Mobile,
+                //    UserRole=findUser.RoleId.ToString()
+                //},Options.Value.Key,Options.Value.Audience,Options.Value.Issuer), error = "" });
             }
             return Json(new { success = false, error = "اطلاعات کاربر و توکن تطابق ندارد" });
         }
+    }
+
+    public class userToken
+    {
+        public int userid { get; set; }
+        public string accesstoken { get; set; }
     }
 }

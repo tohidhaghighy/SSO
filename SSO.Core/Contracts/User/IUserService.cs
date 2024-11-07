@@ -9,7 +9,7 @@ namespace Authentication_Server.Core.Contracts.User
     public interface IUserService
     {
         Task<List<SSO.Core.Models.User>> GetUserList(int applicationId, string fullName, string userName,string mobile,string email,int roleId);
-        Task<SSO.Core.Models.User> GetUser(string accessToken);
+        Task<SSO.Core.Models.User> GetUser();
         Task<SSO.Core.Models.User> GetUserById(int id);
         Task<SSO.Core.Models.User> ActiveUser(SSO.Core.Models.User user);
         Task<List<SSO.Core.Models.User>> Login(int applicationId, string userName, string password);

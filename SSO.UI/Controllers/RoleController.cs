@@ -30,12 +30,8 @@ namespace SSO.UI.Controllers
             {
                 return Redirect("/Login");
             }
-            var user = await UserService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-            {
-                return Redirect("/Login");
-            }
-            return View(await RoleService.GetRoleList(user.ApplicationId,"",""));
+            var user = await UserService.GetUser();
+            return View(await RoleService.GetRoleList(2,"",""));
         }
 
         public async Task<PartialViewResult> Search(string accessToken,string name="",string urlpanel="")
@@ -47,12 +43,12 @@ namespace SSO.UI.Controllers
             {
                 return PartialView("_roleList", null);
             }
-            var user = await UserService.GetUser(accessToken);
+            var user = await UserService.GetUser();
             if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
             {
                 return PartialView("_roleList", null);
             }
-            return PartialView("_roleList",await RoleService.GetRoleList(user.ApplicationId,name,urlpanel));
+            return PartialView("_roleList",await RoleService.GetRoleList(2,name,urlpanel));
         }
 
         public async Task<IActionResult> Insert(string accessToken)
@@ -69,7 +65,7 @@ namespace SSO.UI.Controllers
                 {
                     return Json(new { status = false, message = "توکن در درخواست وجود ندارد" });
                 }
-                var user = await UserService.GetUser(accessToken);
+                var user = await UserService.GetUser();
                 if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
                 {
                     return Json(new { status = false, message = "کاربر مورد نظر وجود ندارد" });
@@ -97,13 +93,9 @@ namespace SSO.UI.Controllers
             {
                 return Redirect("/Login");
             }
-            var user = await UserService.GetUser(accessToken);
-            if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
-            {
-                return Redirect("/Login");
-            }
+            var user = await UserService.GetUser();
             var unSelectedAccessList = new List<Access>();
-            var accessList = await AccessService.GetAccessList(user.ApplicationId, "", "");
+            var accessList = await AccessService.GetAccessList(2, "", "");
             foreach (var item in accessList)
             {
                 var currentaccess = await RoleAccessService.GetRoleAccessList(roleid, item.Id);
@@ -146,7 +138,7 @@ namespace SSO.UI.Controllers
             {
                 return PartialView("_accessInsertList", null);
             }
-            var user = await UserService.GetUser(accessToken);
+            var user = await UserService.GetUser();
             if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
             {
                 return PartialView("_accessInsertList", null);
@@ -201,7 +193,7 @@ namespace SSO.UI.Controllers
                 {
                     return Json(new { status = false, message = "توکن در درخواست وجود ندارد" });
                 }
-                var user = await UserService.GetUser(accessToken);
+                var user = await UserService.GetUser();
                 if (user == null || user.RefreshTokenExpiryTime < DateTime.Now)
                 {
                     return Json(new { status = false, message = "کاربر مورد نظر وجود ندارد" });
