@@ -108,6 +108,16 @@
                                             <option value="6">  کاربر عادی</option>
                                         }
                                     }
+                                    @{
+                                        if (@Model.RoleId == 9)
+                                        {
+                                            <option value="9" selected>ادمین سامانه</option>
+                                        }
+                                        else
+                                        {
+                                                    <option value="9">ادمین سامانه</option>
+                                        }
+                                    }
                                     
                                 </select>
                             </div>
