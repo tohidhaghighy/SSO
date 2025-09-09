@@ -51,6 +51,12 @@ namespace Authentication_Server.Application.Services.User
             return result;
         }
 
+        public async Task<List<SSO.Core.Models.User>> GetRelatedUsers(int roleId)
+        {
+            var result = await _dbContext.Users.Where(a => a.RoleId == roleId).ToListAsync();
+            return result;
+        }
+
         public async Task<SSO.Core.Models.User> InsertUser(SSO.Core.Models.User user)
         {
             user.InsertDate = DateTime.Now;

@@ -2,10 +2,12 @@
 using Authentication_Server.Core.Contracts.Application;
 using Authentication_Server.Core.Contracts.Role;
 using Authentication_Server.Core.Contracts.User;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SSO.Api.Infrastructure.Common;
 using SSO.Api.Infrastructure.Model;
+using System.Linq.Expressions;
 
 namespace SSO.Api.Controllers
 {
@@ -72,11 +74,52 @@ namespace SSO.Api.Controllers
             }
             return Json(new { success = false, error = "اطلاعات کاربر و توکن تطابق ندارد" });
         }
+
+        [HttpGet("GetUserRole")]
+        public async Task<JsonResult> GetUserRole(int roleId)
+        {
+            var userListInfo = new List<userInfo>();
+            var userList = new List<Core.Models.User>();
+
+            switch (roleId)
+            {
+                case 3:
+                    userList = await userService.GetRelatedUsers(8);
+                    break;
+                case 4:
+                    userList = await userService.GetRelatedUsers(9);
+                    break;
+                case 5:
+                    userList = await userService.GetRelatedUsers(10);
+                    break;
+            }
+
+            foreach (var item in userList)
+            {
+                userListInfo.Add(new userInfo()
+                {
+                    UserId = item.Id,
+                    Name = item.Name + item.Family,
+                    RoleId = item.RoleId,
+                    VirtualId = item.Role.VirtualId ?? 0
+                });
+            }
+
+            return Json(new { success = true, data = userListInfo });
+        }
     }
 
     public class userToken
     {
         public int userid { get; set; }
         public string accesstoken { get; set; }
+    }
+
+    public class userInfo
+    {
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
+        public string Name { get; set; }
+        public int VirtualId { get; set; }
     }
 }

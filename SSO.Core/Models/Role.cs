@@ -14,6 +14,7 @@ namespace SSO.Core.Models
 
         [Required]
         public int ApplicationId { get; set; }
+        public int? VirtualId { get; set; }
 
         //[Required]
         //public bool ShowInRegister { get; set; }

@@ -17,5 +17,6 @@ namespace Authentication_Server.Core.Contracts.User
         Task<SSO.Core.Models.User> DeleteUser(int id);
         Task<SSO.Core.Models.User> UpdateUser(SSO.Core.Models.User user);
         Task<SSO.Core.Models.User> UpdateUserToken(int userid, string accessToken, string refreshToken, DateTime tokenExpiredTime);
+        Task<List<SSO.Core.Models.User>> GetRelatedUsers(int roleId);
     }
 }
