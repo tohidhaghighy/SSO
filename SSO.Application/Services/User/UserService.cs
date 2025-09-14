@@ -1,5 +1,6 @@
 ﻿using Authentication_Server.Core.Contracts.User;
 using Microsoft.EntityFrameworkCore;
+using SSO.Core.Models;
 using SSO.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -53,8 +54,15 @@ namespace Authentication_Server.Application.Services.User
 
         public async Task<List<SSO.Core.Models.User>> GetRelatedUsers(int roleId)
         {
-            var result = await _dbContext.Users.Where(a => a.RoleId == roleId).ToListAsync();
-            return result;
+            if (roleId == 2)
+            {
+                return await _dbContext.Users.Where(a => a.ApplicationId == 2 && (a.RoleId == 1007 || a.RoleId == 1008 || a.RoleId == 1009)).Include(a => a.Role).ToListAsync();
+            }
+            else
+            {
+                return await _dbContext.Users.Where(a => a.RoleId == roleId).Include(a => a.Role).ToListAsync();
+            }
+            return null;
         }
 
         public async Task<SSO.Core.Models.User> InsertUser(SSO.Core.Models.User user)

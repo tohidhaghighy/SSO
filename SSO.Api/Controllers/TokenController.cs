@@ -5,6 +5,7 @@ using Authentication_Server.Core.Contracts.User;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SSO.Api.Enums;
 using SSO.Api.Infrastructure.Common;
 using SSO.Api.Infrastructure.Model;
 using System.Linq.Expressions;
@@ -81,16 +82,24 @@ namespace SSO.Api.Controllers
             var userListInfo = new List<userInfo>();
             var userList = new List<Core.Models.User>();
 
-            switch (roleId)
+            var findrole=await roleService.GetRole(roleId);
+
+            switch (findrole.VirtualId)
             {
-                case 3:
-                    userList = await userService.GetRelatedUsers(8);
+                case (int)RoleType.adminsta:
+                    findrole = await roleService.GetRoleByVirtualRole((int)RoleType.usersta);
+                    userList = await userService.GetRelatedUsers(findrole.Id);
                     break;
-                case 4:
-                    userList = await userService.GetRelatedUsers(9);
+                case (int)RoleType.adminina:
+                    findrole = await roleService.GetRoleByVirtualRole((int)RoleType.userina);
+                    userList = await userService.GetRelatedUsers(findrole.Id);
                     break;
-                case 5:
-                    userList = await userService.GetRelatedUsers(10);
+                case (int)RoleType.adminita:
+                    findrole = await roleService.GetRoleByVirtualRole((int)RoleType.userita);
+                    userList = await userService.GetRelatedUsers(findrole.Id);
+                    break;
+                case (int)RoleType.admindir:
+                    userList = await userService.GetRelatedUsers((int)RoleType.admindir);
                     break;
             }
 
@@ -99,7 +108,7 @@ namespace SSO.Api.Controllers
                 userListInfo.Add(new userInfo()
                 {
                     UserId = item.Id,
-                    Name = item.Name + item.Family,
+                    Name = item.Name +" "+ item.Family,
                     RoleId = item.RoleId,
                     VirtualId = item.Role.VirtualId ?? 0
                 });

@@ -41,6 +41,12 @@ namespace Authentication_Server.Application.Services.Role
             return result;
         }
 
+        public async Task<SSO.Core.Models.Role> GetRoleByVirtualRole(int VirtualId)
+        {
+            var result = await _dbContext.Roles.Where(a => a.VirtualId == VirtualId).FirstOrDefaultAsync();
+            return result;
+        }
+
         public async Task<List<SSO.Core.Models.Role>> GetRoleList(int applicationId, string name, string userPanel)
         {
             var result = await _dbContext.Roles.Where(a=>a.ApplicationId==applicationId && a.Name.Contains(name) && a.UrlPanel.Contains(userPanel)).ToListAsync();

@@ -14,5 +14,6 @@ namespace Authentication_Server.Core.Contracts.Role
         Task<SSO.Core.Models.Role> InsertRole(SSO.Core.Models.Role role);
         Task<SSO.Core.Models.Role> DeleteRole(int id);
         Task<SSO.Core.Models.Role> UpdateRole(SSO.Core.Models.Role role);
+        Task<SSO.Core.Models.Role> GetRoleByVirtualRole(int VirtualId);
     }
 }
