@@ -54,7 +54,7 @@ namespace Authentication_Server.Application.Services.User
 
         public async Task<List<SSO.Core.Models.User>> GetRelatedUsers(int roleId)
         {
-            if (roleId == 2 || roleId == 1)
+            if (roleId == 2 || roleId == 7)
             {
                 return await _dbContext.Users.Where(a => a.ApplicationId == 2 && (a.RoleId == 1007 || a.RoleId == 1008 || a.RoleId == 1009)).Include(a => a.Role).ToListAsync();
             }
