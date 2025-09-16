@@ -54,15 +54,14 @@ namespace Authentication_Server.Application.Services.User
 
         public async Task<List<SSO.Core.Models.User>> GetRelatedUsers(int roleId)
         {
-            if (roleId == 2 || roleId == 7)
+            if (roleId==2 || roleId==9)
             {
-                return await _dbContext.Users.Where(a => a.ApplicationId == 2 && (a.RoleId == 1007 || a.RoleId == 1008 || a.RoleId == 1009)).Include(a => a.Role).ToListAsync();
+                return await _dbContext.Users.Where(a => a.RoleId == 1007 || a.RoleId == 1008 || a.RoleId == 1009).Include(a => a.Role).ToListAsync();
             }
             else
             {
                 return await _dbContext.Users.Where(a => a.RoleId == roleId).Include(a => a.Role).ToListAsync();
             }
-            return null;
         }
 
         public async Task<SSO.Core.Models.User> InsertUser(SSO.Core.Models.User user)

@@ -99,10 +99,12 @@ namespace SSO.Api.Controllers
                     userList = await userService.GetRelatedUsers(findrole.Id);
                     break;
                 case (int)RoleType.admindir:
-                    userList = await userService.GetRelatedUsers((int)RoleType.admindir);
+                    findrole = await roleService.GetRoleByVirtualRole((int)RoleType.admindir);
+                    userList = await userService.GetRelatedUsers(findrole.Id);
                     break;
                 case (int)RoleType.ticketingAdmin:
-                    userList = await userService.GetRelatedUsers((int)RoleType.ticketingAdmin);
+                    findrole = await roleService.GetRoleByVirtualRole((int)RoleType.ticketingAdmin);
+                    userList = await userService.GetRelatedUsers(findrole.Id);
                     break;
             }
 
