@@ -103,9 +103,8 @@
                              if (@ViewData["ApplicationId"]== 1) {
                                 window.location.href = data.url + '?accessToken=' + data.accessToken;
                              } else {
-                                window.location.href = data.url + '/' + data.userid + '/' + data.accessToken;
+                                window.location.href = data.url + '/' + data.userid + '/'+data.userid;
                              }
-                             
                          }else{
                              toastr.error(data.message);
                          }
