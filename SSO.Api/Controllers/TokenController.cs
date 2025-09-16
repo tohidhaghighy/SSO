@@ -101,6 +101,9 @@ namespace SSO.Api.Controllers
                 case (int)RoleType.admindir:
                     userList = await userService.GetRelatedUsers((int)RoleType.admindir);
                     break;
+                case (int)RoleType.ticketingAdmin:
+                    userList = await userService.GetRelatedUsers((int)RoleType.ticketingAdmin);
+                    break;
             }
 
             foreach (var item in userList)
