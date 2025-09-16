@@ -63,15 +63,6 @@ namespace SSO.Api.Controllers
                     },
                     error = ""
                 });
-                //return Json(new { success = true, token = GenerateJWTToken.GenerateToken(new Infrastructure.Model.UserModel()
-                //{
-                //    UserId = userToken.userid,
-                //    Name=findUser.Name,
-                //    Family=findUser.Family,
-                //    Username=findUser.UserName,
-                //    Mobile=findUser.Mobile,
-                //    UserRole=findUser.RoleId.ToString()
-                //},Options.Value.Key,Options.Value.Audience,Options.Value.Issuer), error = "" });
             }
             return Json(new { success = false, error = "اطلاعات کاربر و توکن تطابق ندارد" });
         }
