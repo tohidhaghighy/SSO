@@ -2,6 +2,7 @@
 {
     public enum RoleType
     {
+        ticketingAdmin = 1, //ادمین سامانه
         admindir = 2, //مدیر کل
         adminsta = 3, //معاون آمار
         adminina = 4, //معاون زیرساخت، شبکه و امنیت
